@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Air Force</h1>
   <h3>Air Quality Tracking & Forecasting App</h3>
-  <h4>Participate in</h4>
+  <h4>&darr; participate in &darr;</h4>
 </div>
 
 <div align="center">
