@@ -1,5 +1,25 @@
 # 🌍 AirForce – Air Quality Tracking & Forecasting App
 
+<div align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg" width="25%" alt="NASA Space Apps" />
+  <img src="https://github.com/DanielNguyen-05/AirForce/images/LOGO.png" width="25%" alt="AirForce" />
+</div>
+<hr>
+<div align="center" style="line-height: 1.4;">
+    <a href="https://www.spaceappschallenge.org/"><img alt="Hackathon"
+    src="https://img.shields.io/badge/NASA%20Space%20Apps%20Challenge%202025-red?style=for-the-badge"/></a>
+    <a href="#"><img alt="Field"
+    src="https://img.shields.io/badge/Earth%20Observation-forestgreen?style=for-the-badge"/></a>
+    <a href="#"><img alt="AI Skill"
+    src="https://img.shields.io/badge/AI%20Engineering-orange?style=for-the-badge"/></a>
+    <a href="#"><img alt="Web Skill"
+    src="https://img.shields.io/badge/Applications%20Development-blueviolet?style=for-the-badge"/></a>
+    <a href="#"><img alt="Cloud Skill"
+    src="https://img.shields.io/badge/Cloud%20Computing-skyblue?style=for-the-badge"/></a>
+    <br/>
+    <a href="https://github.com/DanielNguyen-05/AirForce/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/DanielNguyen-05/AirForce?style=for-the-badge&logo=github"/></a>
+</div>
+
 ## Overview
 This web application was developed as part of the **NASA Space Apps Challenge 2025** with the topic **From EarthData to Action: Cloud Computing with Earth Observation Data for Predicting Cleaner, Safer Skies**.
 
@@ -22,6 +42,7 @@ This web application was developed as part of the **NASA Space Apps Challenge 20
 * [EPA AirNow ground station data](https://docs.airnowapi.org/)
 * [NOAA weather forecasts](https://www.ncei.noaa.gov/access)
 * [WHO Ambient Air quality database](https://www.who.int/data/gho/data/themes/air-pollution/who-air-quality-database)
+  
 ## Machine Learning Models
 * Baseline: ARIMA, Linear Regression.
 * Deep Learning: LSTM, TCN, Transformer-based time-series models.
