@@ -18,11 +18,10 @@ This web application was developed as part of the **NASA Space Apps Challenge 20
 * **Cloud-native scaling**: run on Kubernetes/Serverless functions to accommodate thousands of users.
 
 ## Training Dataset
-* TEMPO satellite data ($NO_2$, $O_3$, $PM_{2-5}$).
-* EPA AirNow ground station data.
-* NOAA weather forecasts (wind, humidity, temperature).
-* Preprocessing pipeline xử lý missing data, normalization, time alignment.
- 
+* [TEMPO satellite data](https://asdc.larc.nasa.gov/)
+* [EPA AirNow ground station data](https://docs.airnowapi.org/)
+* [NOAA weather forecasts](https://www.ncei.noaa.gov/access)
+* [WHO Ambient Air quality database](https://www.who.int/data/gho/data/themes/air-pollution/who-air-quality-database)
 ## Machine Learning Models
 * Baseline: ARIMA, Linear Regression.
 * Deep Learning: LSTM, TCN, Transformer-based time-series models.
