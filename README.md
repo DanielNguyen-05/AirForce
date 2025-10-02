@@ -1,15 +1,21 @@
-# 🌍 AirForce – Air Quality Tracking & Forecasting App
+<div align="center">
+  <h1>Air Force</h1>
+  <h3>Air Quality Tracking & Forecasting App</h3>
+  <h4>Participate in</h4>
+</div>
 
 <div align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg" width="25%" alt="NASA Space Apps" />
-  <img src="https://github.com/DanielNguyen-05/AirForce/images/LOGO.png" width="25%" alt="AirForce" />
+  <img src="https://assets.spaceappschallenge.org/media/images/Colorway2-Color_White3x.width-440.jpegquality-60.png?raw=true" height="25%" alt="NASA Space Apps" />
 </div>
 <hr>
 <div align="center" style="line-height: 1.4;">
-    <a href="https://www.spaceappschallenge.org/"><img alt="Hackathon"
-    src="https://img.shields.io/badge/NASA%20Space%20Apps%20Challenge%202025-red?style=for-the-badge"/></a>
     <a href="#"><img alt="Field"
     src="https://img.shields.io/badge/Earth%20Observation-forestgreen?style=for-the-badge"/></a>
+    <a href="#"><img alt="Field"
+    src="https://img.shields.io/badge/Air%20Quality%20Tracking-blue?style=for-the-badge"/></a>
+    <a href="#"><img alt="Field"
+    src="https://img.shields.io/badge/Air%20Quality%20Forecasting-red?style=for-the-badge"/></a>
+    <br/>
     <a href="#"><img alt="AI Skill"
     src="https://img.shields.io/badge/AI%20Engineering-orange?style=for-the-badge"/></a>
     <a href="#"><img alt="Web Skill"
