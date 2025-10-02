@@ -1,11 +1,8 @@
-<div align="center">
-  <h1>Air Force</h1>
-  <h3>Air Quality Tracking & Forecasting App</h3>
-  <h4>&darr; participate in &darr;</h4>
-</div>
 
 <div align="center">
-  <img src="https://assets.spaceappschallenge.org/media/images/Colorway2-Color_White3x.width-440.jpegquality-60.png?raw=true" height="25%" alt="NASA Space Apps" />
+  <img src="https://github.com/DanielNguyen-05/AirForce/blob/main/assets/images/LOGO.png?raw=true" height="150" alt="LOGO" />
+  <hr/>
+  <img src="https://assets.spaceappschallenge.org/media/images/Colorway2-Color_White3x.width-440.jpegquality-60.png?raw=true" height="130" alt="NASA Space Apps" />
 </div>
 <hr>
 <div align="center" style="line-height: 1.4;">
