@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { SevenDayChart } from "../../components/SevenDayChart";
 
 function SemiCircleGauge({ value, min, max, size = 150, label }) {
   const pct = Math.max(0, Math.min(1, (value - min) / (max - min)));
@@ -22,7 +23,9 @@ function SemiCircleGauge({ value, min, max, size = 150, label }) {
 
   // Path nền và path giá trị
   const trackPath = `M ${startX} ${startY} A ${gaugeRadius} ${gaugeRadius} 0 0 1 ${endX} ${endY}`;
-  const valuePath = `M ${startX} ${startY} A ${gaugeRadius} ${gaugeRadius} 0 ${pct > 0.5 ? 1 : 0} 1 ${midX} ${midY}`;
+  const valuePath = `M ${startX} ${startY} A ${gaugeRadius} ${gaugeRadius} 0 ${
+    pct > 0.5 ? 1 : 0
+  } 1 ${midX} ${midY}`;
 
   return (
     <div className="flex flex-col items-center text-center">
@@ -68,35 +71,35 @@ function getAqiStatus(aqi) {
       text: "Good",
       tone: "green",
       badge: "bg-green-50 text-green-700 ring-green-600/20",
-      textColor: "text-green-700"
+      textColor: "text-green-700",
     };
   } else if (aqi <= 100) {
     return {
       text: "Moderate ",
       tone: "yellow",
       badge: "bg-yellow-50 text-yellow-700 ring-yellow-600/20",
-      textColor: "text-yellow-700"
+      textColor: "text-yellow-700",
     };
   } else if (aqi <= 150) {
     return {
       text: "Unhealthy for Sensitive Groups (101–150)",
       tone: "orange",
       badge: "bg-orange-50 text-orange-700 ring-orange-600/20",
-      textColor: "text-orange-700"
+      textColor: "text-orange-700",
     };
   } else if (aqi <= 200) {
     return {
       text: "Unhealthy",
       tone: "red",
       badge: "bg-red-50 text-red-700 ring-red-600/20",
-      textColor: "text-red-700"
+      textColor: "text-red-700",
     };
   } else {
     return {
       text: "Very Unhealthy",
       tone: "purple",
       badge: "bg-purple-50 text-purple-700 ring-purple-600/20",
-      textColor: "text-purple-700"
+      textColor: "text-purple-700",
     };
   }
 }
@@ -107,6 +110,8 @@ export const Section = () => {
   const [status, setStatus] = useState({});
   const [co2Values, setCo2Values] = useState([]);
   const [outdoor, setOutdoor] = useState({});
+  const [pred, setPred] = useState([]);
+  const [aqiHistorical, setAqiHistorical] = useState([]);
 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -119,12 +124,12 @@ export const Section = () => {
     fetch(`${import.meta.env.VITE_BASE_URL}/waqi/geo`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         lat: latitude,
-        lon: longitude
-      })
+        lon: longitude,
+      }),
     })
       .then((res) => res.json())
       .then((result) => {
@@ -135,39 +140,39 @@ export const Section = () => {
             value: data.openweather.components.co || 0,
             label: "CO",
             min: 0,
-            max: 50
+            max: 50,
           },
           {
             value: data.openweather.components.pm2_5 || 0,
             label: "PM2.5",
             min: 0,
-            max: 500
+            max: 500,
           },
           {
             value: data.openweather.components.pm10 || 0,
             label: "PM10",
             min: 0,
-            max: 600
+            max: 600,
           },
           {
             value: data.openweather.components.no2 || 0,
             label: "NO2",
             min: 0,
-            max: 2000
+            max: 2000,
           },
           {
             value: data.openweather.components.o3 || 0,
             label: "O3",
             min: 0,
-            max: 600
+            max: 600,
           },
           {
             value: data.openweather.components.so2 || 0,
             label: "SO2",
             min: 0,
-            max: 1600
+            max: 1600,
           },
-        ])
+        ]);
         setOutdoor({
           tempC: data.waqi.t,
           aqi: data.openweather.aqi || 0,
@@ -175,7 +180,7 @@ export const Section = () => {
           wind: data.waqi.w || 0,
           pressure: `${data.waqi.p || 0} hPa`,
           icon: "🌙☁️",
-        })
+        });
         setSelected({
           lat: latitude,
           lon: longitude,
@@ -186,37 +191,48 @@ export const Section = () => {
         fetch(`${import.meta.env.VITE_BASE_URL}/waqi/history`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             lat: latitude,
-            lon: longitude
-          })
+            lon: longitude,
+          }),
         })
           .then((res) => res.json())
           .then((result2) => {
             console.log(result2.data);
+            const temp = [];
+            result2.data.forEach((item) => {
+              temp.push(item.aqi);
+            });
+            setAqiHistorical(temp);
+            // console.log(aqiHistorical);
             setIaqIndex(result2.data[6].aqi);
             setStatus(getAqiStatus(result2.data[6].aqi));
             fetch(`${import.meta.env.VITE_PYTHON_URL}/predict`, {
               method: "POST",
               headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
               },
               body: JSON.stringify({
                 data: result2.data,
                 lat: latitude,
-                lon: longitude
-              })
+                lon: longitude,
+              }),
             })
               .then((res) => res.json())
               .then((pred) => {
+                setPred(
+                  Array.isArray(pred.prediction)
+                    ? pred.prediction
+                    : Array(7).fill(0)
+                );
                 console.log("Prediction data:", pred);
               })
               .catch((err) => console.error("Prediction error:", err));
-          })
-      })
-  }
+          });
+      });
+  };
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -234,7 +250,8 @@ export const Section = () => {
     const map = useMap();
     useEffect(() => {
       if (!selected || !map) return;
-      const targetZoom = typeof zoomLevel === "number" ? zoomLevel : map.getZoom();
+      const targetZoom =
+        typeof zoomLevel === "number" ? zoomLevel : map.getZoom();
       try {
         map.flyTo([selected.lat, selected.lon], targetZoom, { animate: true });
       } catch (e) {
@@ -297,10 +314,7 @@ export const Section = () => {
 
   return (
     <>
-      <div
-        className="w-full p-6 mb-[10px]"
-        ref={sectionRef}
-      >
+      <div className="w-full p-6 mb-[10px]" ref={sectionRef}>
         <div className="max-w-6xl mx-auto text-white">
           <h1 className="text-3xl font-bold tracking-tight drop-shadow">
             {query}
@@ -315,7 +329,9 @@ export const Section = () => {
               </div>
 
               <div className="mt-6 grid grid-cols-2 items-end">
-                <div className={`text-[84px] leading-none md:text-[104px] font-extrabold drop-shadow-sm ${status.textColor}`}>
+                <div
+                  className={`text-[84px] leading-none md:text-[104px] font-extrabold drop-shadow-sm ${status.textColor}`}
+                >
                   {iaqIndex}
                 </div>
                 <div className="justify-self-end text-right">
@@ -420,6 +436,18 @@ export const Section = () => {
               )}
             </MapContainer>
           </div>
+        </div>
+      </div>
+
+      <div className="w-full p-6 pb-10 bg-red-50// flex items-center justify-center">
+        <div className="w-full flex  max-w-7xl flex-col items-center justify-center">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight drop-shadow text-center mb-[10px]">
+            Air Quality Index (AQI) Prediction for next 7 days
+          </h1>
+          <SevenDayChart
+            data={pred.length > 0 ? pred : Array(7).fill(0)}
+            historyData={aqiHistorical}
+          />
         </div>
       </div>
     </>
