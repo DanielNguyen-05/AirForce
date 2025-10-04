@@ -1,15 +1,19 @@
-from typing import Union
-from tensorflow.keras import 
-from fastapi import FastAPI
+# main.py
+from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import JSONResponse
+import pandas as pd
+import numpy as np
+from tensorflow.keras.models import load_model
 
 app = FastAPI()
 
+model = load_model("lstm_global_model_3.keras")
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+df = pd.read_csv("./data/mean_dataset.csv")
+df = df.head(7)
+features = ['pm25', 'pm10', 'no2', 'co', 'so2', 'o3', 'x', 'y', 'z']
+X = df[features].values
+X = X.reshape((1, X.shape[0], X.shape[1]))
+y_pred = model.predict(X)
 
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+print("Predicted AQI sequence:", y_pred.flatten())
