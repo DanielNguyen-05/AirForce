@@ -188,6 +188,21 @@ export const Section = () => {
                 name: data.station || "Current location",
               });
               setQuery(data.station);
+
+              fetch(`${import.meta.env.VITE_BASE_URL}/waqi/history`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  lat: latitude,
+                  lon: longitude
+                })
+              })
+                .then((res) => res.json())
+                .then((result2) => {
+                  console.log(result2);
+                })
             })
         },
         (err) => console.error(err)

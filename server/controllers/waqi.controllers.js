@@ -289,14 +289,19 @@ export async function getHistory(req, res) {
 
         const lat = Number(req.body.lat);
         const lon = Number(req.body.lon);
-        const start = toUnixFromVNDateOnly(req.body.start);
-        const end = toUnixFromVNDateOnly(req.body.end);
 
-        if ([lat, lon, start, end].some((v) => !Number.isFinite(v))) {
-            return res
-                .status(400)
-                .json({ success: false, message: "lat/lon/start/end must be numbers" });
-        }
+        const format = (d) => {
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, "0");
+            const day = String(d.getDate()).padStart(2, "0");
+            return toUnixFromVNDateOnly(`${year}-${month}-${day}`);
+        };
+
+        const endDate = new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000);
+        const startDate = new Date(endDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+        const end = format(endDate);
+        const start = format(startDate);
 
         const resp = await axios.get("https://api.openweathermap.org/data/2.5/air_pollution/history", {
             params: { lat, lon, start, end, appid: TOKEN },
