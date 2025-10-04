@@ -469,7 +469,7 @@ export const Section = () => {
           </h1>
           <SevenDayChart
             data={pred.length > 0 ? pred : Array(7).fill(0)}
-            historyData={aqiHistorical}
+            // historyData={aqiHistorical}
           />
         </div>
       </div>
