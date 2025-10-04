@@ -1,7 +1,13 @@
-export default function Home(){
+import { Footer } from "../../components/Footer/Footer";
+import { Header } from "../../components/Header/Header";
+import { Section } from "./Section";
+
+export default function Home() {
   return (
     <>
-      <div>Trang Liên hệ</div>
+      <Header />
+      <Section />
+      <Footer />
     </>
   );
 }
