@@ -1,54 +1,46 @@
 import './App.css'
 import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from "react-router-dom";
 import Home from './pages/Home/Home';
-import Login from './pages/Account/Login';
-import Register from './pages/Account/Register';
-import ForgotPassword from './pages/Account/ForgotPassword';
-import OTPPassword from './pages/Account/OTPPassword';
-import ResetPassword from './pages/Account/ResetPassword';
-import Map from './pages/Map/Map';
-import Forecast from './pages/Forecast/Forecast';
 import Contact from './pages/Contact/Contact';
+import Dashboard from './pages/Dashboard/Dashboard';
+import {AOSConfig} from "./../config/AOSConfig"
 
 function AccountLayout() {
   return (
-    <div>
+    <div className='flex flex-col justify-center items-center pt-[100px]'>
+      <div className='font-bold text-[64px] text-white'>Welcome to AirForce</div>
       <Outlet />
     </div>
   );
 }
 
+function MainLayout() {
+  return (
+    <div className='bg-gradient-to-t from-[#ffff] to-[#0159EF] h-180 w-full'>
+      <Outlet />
+    </div>
+  )
+}
+
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Home */}
-        <Route path="/" element={<Home />} />
+    <>
+      <AOSConfig/>
+      <Router>
+        <Routes>
+          <Route path='/' element={<MainLayout />}>
+            {/* Home */}
+            <Route index element={<Home />} />
 
-        {/* Auth */}
-        <Route path="/account" element={<AccountLayout />}>
-          <Route index element={<Navigate to="login" replace />} />
+            {/* Dashboard */}
+            <Route path='/dashboard' element={<Dashboard />} />
 
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="otp-password" element={<OTPPassword />} />
-          <Route path="reset-password" element={<ResetPassword />} />
-        </Route>
-
-        {/* Map */}
-        <Route path='/map' element={<Map/>} />
-        
-        {/* Dashboard */}
-        <Route path='/dashboard' element={<Dashboard/>} />
-
-        {/* Forecast */}
-        <Route path='/forecast' element={<Forecast/>} />
-        
-        {/* Contact */}
-        <Route path='/contact' element={<Contact/>} />
-      </Routes>
-    </Router>
+            {/* Contact */}
+            <Route path='/contact' element={<Contact />} />
+          </Route>
+        </Routes>
+      </Router>
+    </>
   );
 }
 
