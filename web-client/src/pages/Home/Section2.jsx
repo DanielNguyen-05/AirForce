@@ -33,7 +33,7 @@ export const Section2 = () => {
       <div className="flex justify-center gap-[76px] mx-[45px]">
         {data.map((col) => (
           <div key={col.id} className="flex flex-col items-center" data-aos="zoom-in" data-aos-delay="300">
-            <div className="w-[100px] h-[100px] flex items-center justify-center rounded-full bg-yellow-300 border-2 border-black text-[25px] font-bold">
+            <div className="w-[100px] h-[100px] flex items-center justify-center rounded-full bg-[#F4FF4B] border-2 border-black text-[25px] font-bold">
               {col.id}
             </div>
 

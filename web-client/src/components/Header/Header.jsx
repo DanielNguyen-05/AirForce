@@ -5,7 +5,7 @@ export const Header = () => {
   const navigate = useNavigate();
 
   const linkClass = (path) =>
-    `hover:text-yellow-200 ${location.pathname === path ? "text-yellow-300" : "text-white"
+    `hover:text-[#F4FF4B] ${location.pathname === path ? "text-[#F4FF4B]" : "text-white"
     }`;
 
   return (

@@ -8,9 +8,9 @@ export const Section1 = () => {
           <h1 className="text-[220px] font-extrabold leading-none bg-gradient-to-b from-[#ffffffa7] to-white/0 text-transparent bg-clip-text" data-aos="fade-up">
             AirForce
           </h1>
-          <h2 className="absolute inset-0 flex justify-center items-center text-[96px] font-bold mt-[100px]" data-aos="fade-up" data-aos-delay="300">
-            From <span className="text-yellow-300 mx-4">EarthData</span> to{" "}
-            <span className="text-yellow-300 ml-4">Action</span>
+          <h2 className="absolute inset-0 flex justify-center items-center text-[96px] font-bold mt-[100px] text-white" data-aos="fade-up" data-aos-delay="300">
+            From <span className="text-[#F4FF4B] mx-4">EarthData</span> to{" "}
+            <span className="text-[#F4FF4B] ml-4">Action</span>
           </h2>
           <p className="text-white font-bold text-[30px]" data-aos="fade-up" data-aos-delay="350">
             Cloud Computing with Earth Observation Data
