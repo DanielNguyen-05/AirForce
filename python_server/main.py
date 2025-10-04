@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 import requests
 import pandas as pd
 from typing import Tuple
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # --- 1. Tải mô hình ---
 model = None
@@ -47,6 +47,7 @@ def generate_prompt(df: pd.DataFrame, latitude: float, longitude: float, current
     forecast_data = df.to_string(index=False)
     
     prompt = (
+        f"NOTE: Answer in one paragraph, do not use * or markdown format, do not write the prompt format in answer again, no longer than 10 sentences. Use friendly, easy-to-understand language with clear structure, bullet points, and appropriate emojis.\n"
         f"You are AirForce - an intelligent air quality advisory assistant for the AirForce application.\n\n"
         f"FORECAST INFORMATION:\n"
         f"- Location: ({latitude}, {longitude})\n"
@@ -68,7 +69,6 @@ def generate_prompt(df: pd.DataFrame, latitude: float, longitude: float, current
         f"   - Suitable indoor/outdoor activities\n"
         f"   - Precautions for outdoor exercise\n\n"
         f"5. Confidence Level: Assess the accuracy of the forecast (based on AQI volatility)\n\n"
-        f"NOTE: Answer in paragraphs, do not write the prompt format in answer, no longer than 10 sentences. Use friendly, easy-to-understand language with clear structure, bullet points, and appropriate emojis.\n"
     )
     return prompt
 
@@ -115,6 +115,14 @@ def get_air_quality_advice(df: pd.DataFrame, latitude: float, longitude: float, 
     except Exception as e:
         return f"[AirForce] Unknown error: {str(e)}"
 
+def get_next_7_days():
+    today = datetime.now()
+    result = []
+    for i in range(1, 8):  # từ ngày mai đến 7 ngày sau
+        next_day = today + timedelta(days=i)
+        formatted = next_day.strftime("%d-%m-%Y")
+        result.append(formatted)
+    return result
 
 # --- 3. Khởi tạo Flask + CORS ---
 app = Flask(__name__)
@@ -202,18 +210,24 @@ def convert_date(date_str: str) -> str:
 def advice():
     try:
         result = request.get_json()
-        data = result.get("data", [])
         lat = result.get("lat")
         lon = result.get("lon")
         aqi = result.get("predict")
+        date = get_next_7_days()
 
-        date = []
-        for arr in data:
-            date.append(convert_date(arr.get("date")))
+        data = {
+            "date": date,
+            "aqi": aqi,
+            "level": ["Moderate", "Unhealthy for Sensitive Groups", "Moderate",  "Unhealthy", "Unhealthy for Sensitive Groups", "Good", "Good"]
+        }
+        df = pd.DataFrame(data)
+
+        advice = get_air_quality_advice(df, lat, lon, datetime.now().strftime("%d-%m-%Y"))
+
+        print(advice)
 
         return jsonify({
-            date,
-            aqi
+            "advice": advice
         })
 
     except Exception as e:

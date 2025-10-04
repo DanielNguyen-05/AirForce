@@ -23,9 +23,8 @@ function SemiCircleGauge({ value, min, max, size = 150, label }) {
 
   // Path nền và path giá trị
   const trackPath = `M ${startX} ${startY} A ${gaugeRadius} ${gaugeRadius} 0 0 1 ${endX} ${endY}`;
-  const valuePath = `M ${startX} ${startY} A ${gaugeRadius} ${gaugeRadius} 0 ${
-    pct > 0.5 ? 1 : 0
-  } 1 ${midX} ${midY}`;
+  const valuePath = `M ${startX} ${startY} A ${gaugeRadius} ${gaugeRadius} 0 ${pct > 0.5 ? 1 : 0
+    } 1 ${midX} ${midY}`;
 
   return (
     <div className="flex flex-col items-center text-center">
@@ -112,6 +111,7 @@ export const Section = () => {
   const [outdoor, setOutdoor] = useState({});
   const [pred, setPred] = useState([]);
   const [aqiHistorical, setAqiHistorical] = useState([]);
+  const [advice, setAdvice] = useState("");
 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -140,37 +140,37 @@ export const Section = () => {
             value: data.openweather.components.co || 0,
             label: "CO",
             min: 0,
-            max: 50,
+            max: 2000,
           },
           {
             value: data.openweather.components.pm2_5 || 0,
             label: "PM2.5",
             min: 0,
-            max: 500,
+            max: 250,
           },
           {
             value: data.openweather.components.pm10 || 0,
             label: "PM10",
             min: 0,
-            max: 600,
+            max: 300,
           },
           {
             value: data.openweather.components.no2 || 0,
             label: "NO2",
             min: 0,
-            max: 2000,
+            max: 100,
           },
           {
             value: data.openweather.components.o3 || 0,
             label: "O3",
             min: 0,
-            max: 600,
+            max: 300,
           },
           {
             value: data.openweather.components.so2 || 0,
             label: "SO2",
             min: 0,
-            max: 1600,
+            max: 10,
           },
         ]);
         setOutdoor({
@@ -232,6 +232,23 @@ export const Section = () => {
               .catch((err) => console.error("Prediction error:", err));
           });
       });
+
+    fetch(`${import.meta.env.VITE_PYTHON_URL}/advice`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        lat: latitude,
+        lon: longitude,
+        aqi: pred
+      })
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        setAdvice(result.advice);
+      })
+      .catch((err) => console.error("Advice error:", err));
   };
 
   useEffect(() => {
@@ -386,6 +403,12 @@ export const Section = () => {
                 <Stat title="Wind" value={`${outdoor.wind} m/s`} />
                 <Stat title="Pressure" value={outdoor.pressure} />
               </div>
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight drop-shadow my-[20px]">
+                Advice
+              </h1>
+              <div>{advice || "Wait seconds! AirForce is thinking..."}</div>
             </div>
           </div>
         </div>
