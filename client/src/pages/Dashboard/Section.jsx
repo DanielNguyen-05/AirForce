@@ -115,111 +115,115 @@ export const Section = () => {
   const timeoutRef = useRef(null);
   const sectionRef = useRef(null);
 
+  const fetchData = (latitude, longitude) => {
+    fetch(`${import.meta.env.VITE_BASE_URL}/waqi/geo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        lat: latitude,
+        lon: longitude
+      })
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        const data = result.data;
+        setDate(data.openweather.date);
+        setCo2Values([
+          {
+            value: data.openweather.components.co || 0,
+            label: "CO",
+            min: 0,
+            max: 50
+          },
+          {
+            value: data.openweather.components.pm2_5 || 0,
+            label: "PM2.5",
+            min: 0,
+            max: 500
+          },
+          {
+            value: data.openweather.components.pm10 || 0,
+            label: "PM10",
+            min: 0,
+            max: 600
+          },
+          {
+            value: data.openweather.components.no2 || 0,
+            label: "NO2",
+            min: 0,
+            max: 2000
+          },
+          {
+            value: data.openweather.components.o3 || 0,
+            label: "O3",
+            min: 0,
+            max: 600
+          },
+          {
+            value: data.openweather.components.so2 || 0,
+            label: "SO2",
+            min: 0,
+            max: 1600
+          },
+        ])
+        setOutdoor({
+          tempC: data.waqi.t,
+          aqi: data.openweather.aqi || 0,
+          humidity: data.waqi.h || 0,
+          wind: data.waqi.w || 0,
+          pressure: `${data.waqi.p || 0} hPa`,
+          icon: "🌙☁️",
+        })
+        setSelected({
+          lat: latitude,
+          lon: longitude,
+          name: data.station || "Current location",
+        });
+        setQuery(data.station);
+
+        fetch(`${import.meta.env.VITE_BASE_URL}/waqi/history`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            lat: latitude,
+            lon: longitude
+          })
+        })
+          .then((res) => res.json())
+          .then((result2) => {
+            console.log(result2.data);
+            setIaqIndex(result2.data[6].aqi);
+            setStatus(getAqiStatus(result2.data[6].aqi));
+            fetch(`${import.meta.env.VITE_PYTHON_URL}/predict`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                data: result2.data,
+                lat: latitude,
+                lon: longitude
+              })
+            })
+              .then((res) => res.json())
+              .then((pred) => {
+                console.log("Prediction data:", pred);
+              })
+              .catch((err) => console.error("Prediction error:", err));
+          })
+      })
+  }
+
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const { latitude, longitude } = pos.coords;
-          fetch(`${import.meta.env.VITE_BASE_URL}/waqi/geo`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              lat: latitude,
-              lon: longitude
-            })
-          })
-            .then((res) => res.json())
-            .then((result) => {
-              const data = result.data;
-              setIaqIndex(data.waqi.aqi);
-              setDate(data.openweather.date);
-              setStatus(getAqiStatus(data.waqi.aqi));
-              setCo2Values([
-                {
-                  value: data.openweather.components.co || 0,
-                  label: "CO",
-                  min: 0,
-                  max: 50
-                },
-                {
-                  value: data.openweather.components.pm2_5 || 0,
-                  label: "PM2.5",
-                  min: 0,
-                  max: 500
-                },
-                {
-                  value: data.openweather.components.pm10 || 0,
-                  label: "PM10",
-                  min: 0,
-                  max: 600
-                },
-                {
-                  value: data.openweather.components.no2 || 0,
-                  label: "NO2",
-                  min: 0,
-                  max: 2000
-                },
-                {
-                  value: data.openweather.components.o3 || 0,
-                  label: "O3",
-                  min: 0,
-                  max: 600
-                },
-                {
-                  value: data.openweather.components.so2 || 0,
-                  label: "SO2",
-                  min: 0,
-                  max: 1600
-                },
-              ])
-              setOutdoor({
-                tempC: data.waqi.t,
-                aqi: data.openweather.aqi || 0,
-                humidity: data.waqi.h || 0,
-                wind: data.waqi.w || 0,
-                pressure: `${data.waqi.p || 0} hPa`,
-                icon: "🌙☁️",
-              })
-              setSelected({
-                lat: latitude,
-                lon: longitude,
-                name: data.station || "Current location",
-              });
-              setQuery(data.station);
-
-              fetch(`${import.meta.env.VITE_BASE_URL}/waqi/history`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                  lat: latitude,
-                  lon: longitude
-                })
-              })
-                .then((res) => res.json())
-                .then((result2) => {
-                  console.log(result2.data);
-                  fetch(`${import.meta.env.VITE_PYTHON_URL}/predict`, {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                      data: result2.data,
-                      lat: latitude,
-                      lon: longitude
-                    })
-                  })
-                    .then((res) => res.json())
-                    .then((pred) => {
-                      console.log("Prediction data:", pred);
-                    })
-                    .catch((err) => console.error("Prediction error:", err));
-                })
-            })
+          fetchData(latitude, longitude);
         },
         (err) => console.error(err)
       );
@@ -282,63 +286,7 @@ export const Section = () => {
 
     try {
       setLoading(true);
-      const res = await fetch(`${import.meta.env.VITE_BASE_URL}/waqi/geo`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lat, lon }),
-      });
-      const result = await res.json();
-      const data = result.data;
-      setIaqIndex(data.waqi.aqi);
-      setDate(data.openweather.date);
-      setStatus(getAqiStatus(data.waqi.aqi));
-      setLocation(data.station);
-      setCo2Values([
-        {
-          value: data.openweather.components.co || 0,
-          label: "CO",
-          min: 0,
-          max: 50
-        },
-        {
-          value: data.openweather.components.pm2_5 || 0,
-          label: "PM2.5",
-          min: 0,
-          max: 500
-        },
-        {
-          value: data.openweather.components.pm10 || 0,
-          label: "PM10",
-          min: 0,
-          max: 600
-        },
-        {
-          value: data.openweather.components.no2 || 0,
-          label: "NO2",
-          min: 0,
-          max: 2000
-        },
-        {
-          value: data.openweather.components.o3 || 0,
-          label: "O3",
-          min: 0,
-          max: 600
-        },
-        {
-          value: data.openweather.components.so2 || 0,
-          label: "SO2",
-          min: 0,
-          max: 1600
-        },
-      ])
-      setOutdoor({
-        tempC: data.waqi.t,
-        aqi: data.openweather.aqi || 0,
-        humidity: data.waqi.h || 0,
-        wind: data.waqi.w || 0,
-        pressure: `${data.waqi.p || 0} hPa`,
-        icon: "🌙☁️",
-      })
+      await fetchData(lat, lon);
       sectionRef.current.scrollIntoView({ behavior: "smooth" });
     } catch (e) {
       console.error(e);

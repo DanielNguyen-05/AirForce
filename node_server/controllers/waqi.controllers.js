@@ -156,8 +156,15 @@ function pickOWAir(ow) {
         date = t.date;          // "yyyy-mm-dd HH:mm:ss" (Asia/Ho_Chi_Minh)
         weekday = t.weekday;    // 1..7
     }
+    const c = item.components || {};
+        const aqi_pm25 = aqiFromPM25(c.pm2_5);
+        const aqi_pm10 = aqiFromPM10(c.pm10);
+
+        // tổng hợp AQI hiện có (ưu tiên max)
+        const subs = [aqi_pm25, aqi_pm10].filter(Number.isFinite);
+        const aqi = subs.length ? Math.max(...subs) : null;
     return {
-        // aqi: item?.main?.aqi ?? null,       // 1..5
+        aqi: aqi ?? null,       // 1..5
         components: item?.components ?? null, // µg/m³
         dt,
         date,
@@ -257,7 +264,7 @@ export async function getGeo(req, res) {
             station: waqiData?.station ?? null,
             fetched_at: fetchedAt, // thời điểm server gọi (VN tz)
             waqi: {
-                aqi: waqiData?.aqi ?? null,
+                //aqi: waqiData?.aqi ?? null,
                 h: waqiData?.h ?? null,
                 p: waqiData?.p ?? null,
                 t: waqiData?.t ?? null,
@@ -266,6 +273,7 @@ export async function getGeo(req, res) {
                 weekday: waqiData?.weekday ?? null
             },
             openweather: {
+                aqi: owData?.aqi ?? null,           // 1..5
                 components: owData?.components ?? null,
                 dt: owData?.dt ?? null,             // unix (UTC)
                 date: owData?.date ?? null,         // yyyy-mm-dd (VN tz)
@@ -297,7 +305,7 @@ export async function getHistory(req, res) {
             return toUnixFromVNDateOnly(`${year}-${month}-${day}`);
         };
 
-        const endDate = new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000);
+        const endDate = new Date(new Date().getTime());
         const startDate = new Date(endDate.getTime() - 6 * 24 * 60 * 60 * 1000);
 
         const end = format(endDate);
