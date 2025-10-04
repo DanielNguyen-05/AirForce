@@ -1,0 +1,73 @@
+_wandb:
+    value:
+        cli_version: 0.22.1
+        e:
+            8bcg6ftnx4sqtgfld8n296w8w6h8ko13:
+                codePath: ai/lstm_v1.ipynb
+                codePathLocal: lstm_v1.ipynb
+                cpu_count: 14
+                cpu_count_logical: 20
+                disk:
+                    /:
+                        total: "501809635328"
+                        used: "100421869568"
+                email: quanghuy71847@gmail.com
+                executable: /home/nguyen-quang-huy/GITHUB/My_Repo/AirForce/.venv/bin/python
+                git:
+                    commit: 61336da6ec7ef82e85e96cfb48b3a96258c41fe3
+                    remote: git@github.com:DanielNguyen-05/AirForce.git
+                host: x1-c-g10
+                memory:
+                    total: "33235963904"
+                os: Linux-6.14.0-32-generic-x86_64-with-glibc2.39
+                program: /home/nguyen-quang-huy/GITHUB/My_Repo/AirForce/ai/lstm_v1.ipynb
+                python: CPython 3.12.3
+                root: /home/nguyen-quang-huy/GITHUB/My_Repo/AirForce/ai
+                startedAt: "2025-10-04T11:29:36.673013Z"
+                writerId: 8bcg6ftnx4sqtgfld8n296w8w6h8ko13
+        m: []
+        python_version: 3.12.3
+        t:
+            "1":
+                - 2
+                - 3
+                - 5
+                - 53
+            "2":
+                - 2
+                - 3
+                - 5
+                - 53
+            "3":
+                - 2
+                - 3
+                - 8
+                - 13
+                - 16
+                - 62
+            "4": 3.12.3
+            "5": 0.22.1
+            "8":
+                - 1
+            "10":
+                - 17
+            "12": 0.22.1
+            "13": linux-x86_64
+batch_size:
+    value: 32
+dense_units:
+    value: 32
+dropout:
+    value: 0.1
+epochs:
+    value: 50
+learning_rate:
+    value: 1e-05
+loss:
+    value: mse
+model:
+    value: LSTM
+optimizer:
+    value: adam
+units:
+    value: 64
