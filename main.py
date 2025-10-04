@@ -11,7 +11,7 @@ model = None
 try:
     from tensorflow.keras.models import load_model
     # Cố gắng tải mô hình, sử dụng safe_mode=False
-    model = load_model('ai/lstm_global_model.keras', safe_mode=False)
+    model = load_model('ai/lstm_global_model_3.keras', safe_mode=False)
     print("Mô hình LSTM đã được tải thành công.")
 except Exception as e:
     print(f"LỖI TẢI MÔ HÌNH: Không thể tải mô hình. Chi tiết: {e}")
@@ -46,10 +46,10 @@ def predict():
         
     try:
         data = request.get_json()
+        print(data, '\n')
         
-        # Đảm bảo bạn đã sửa test.py để chỉ gửi 8 giá trị số!
-        if not data or 'input' not in data or not isinstance(data['input'], list) or len(data['input']) != 8:
-            return jsonify({'error': 'Đầu vào không hợp lệ. Cần có 8 giá trị số.'}), 400
+        if not data or 'input' not in data or not isinstance(data['input'], list) or len(data['input']) != 9:
+            return jsonify({'error': 'Đầu vào không hợp lệ. Cần có 9 giá trị số.'}), 400
 
         prediction = predict_aqi(data['input'])
         return jsonify({'prediction': prediction})
@@ -57,6 +57,10 @@ def predict():
     except Exception as e:
         return jsonify({'error': f'Lỗi trong quá trình dự đoán: {str(e)}'}), 500
     
+@app.route('/test', methods=['GET'])
+def test():
+    return jsonify({'message': 'API đang hoạt động!'}), 200
+    
 if __name__ == '__main__':
     # Bỏ qua dòng app.run() khi dùng Gunicorn, nhưng giữ lại cho kiểm thử
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True)
