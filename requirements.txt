@@ -9,3 +9,4 @@ requests
 xarray
 netCDF4
 h5netcdf
+dotenv
