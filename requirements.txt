@@ -1,0 +1,9 @@
+mpandas
+numpy
+scikit-learn
+xgboost
+openpyxl
+requests
+xarray 
+netCDF4 
+h5netcdf
