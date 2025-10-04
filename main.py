@@ -3,11 +3,15 @@ import numpy as np
 from datetime import datetime, timedelta
 import os
 
-DATA_FOLDER = 'data/1999' 
-OUTPUT_CSV = "training/1999_data.csv" 
+# --- FILE CONFIGURATION (Updated to match uploaded files) ---
+
+DATA_FOLDER = 'data/2010' 
+OUTPUT_CSV = "multi_training/2010_data_multi_target.csv" 
 POLLUTION_FILES = ["co.csv", "no2.csv", "ozone.csv", "pm10.csv", "pm25.csv", "so2.csv"]
-WEATHER_FILES = ["press.csv", "rh.csv", "temp.csv", "wind.csv"]
+WEATHER_FILES = ["press.csv", "rh.csv", "temp.csv", "wind.csv"] 
 ALL_INPUT_FILES = POLLUTION_FILES + WEATHER_FILES
+
+POLLUTION_FEATURES = ['pm25', 'pm10', 'no2', 'o3', 'co', 'so2']
 
 # --- MÔ PHỎNG DỮ LIỆU VỆ TINH TEMPO ---
 def mock_fetch_tempo_data(date, latitude, longitude):
@@ -24,6 +28,10 @@ def process_and_convert(df, filename):
     """
     Standardizes column names, filters, and performs unit conversion for both pollution and weather data.
     """
+    # Use str.strip() to clean up 'Parameter Name' values for robust filtering
+    df['Parameter Name'] = df['Parameter Name'].str.strip()
+    
+    # Select and rename core columns
     df_cleaned = df[['Date Local', 'Latitude', 'Longitude', 'Parameter Name', 'Arithmetic Mean']].copy()
     
     df_cleaned.rename(columns={
@@ -33,6 +41,7 @@ def process_and_convert(df, filename):
         'Arithmetic Mean': 'value'
     }, inplace=True)
     
+    # --- POLLUTION DATA PROCESSING ---
     if 'pm25' in filename:
         df_cleaned['feature'] = 'pm25'
     elif 'pm10' in filename:
@@ -42,19 +51,32 @@ def process_and_convert(df, filename):
     elif 'no2' in filename:
         df_cleaned['feature'] = 'no2'
     elif 'ozone' in filename:
+        # Tên cột sau pivot là 'o3'
         df_cleaned['feature'] = 'o3'
     elif 'so2' in filename:
         df_cleaned['feature'] = 'so2'
     
-    elif filename == 'temp.csv':
+    # --- WEATHER DATA PROCESSING ---
+    
+    elif 'temp.csv' in filename:
         df_cleaned['feature'] = 'temperature_c'
+        # Convert Fahrenheit to Celsius: C = (F - 32) / 1.8
         df_cleaned['value'] = (df_cleaned['value'] - 32) / 1.8
-    elif filename == 'rh.csv':
+        
+    elif 'rh.csv' in filename:
+        # Filter explicitly for Relative Humidity
+        df_cleaned = df_cleaned[df_cleaned['Parameter Name'].str.strip() == 'Relative Humidity'].copy()
+        if df_cleaned.empty: return pd.DataFrame() 
         df_cleaned['feature'] = 'humidity_perc'
-    elif filename == 'press.csv':
+        
+    elif 'press.csv' in filename:
+        # Filter explicitly for Barometric pressure
+        df_cleaned = df_cleaned[df_cleaned['Parameter Name'].str.strip() == 'Barometric pressure'].copy()
+        if df_cleaned.empty: return pd.DataFrame() 
+        # Millibars are equivalent to hPa
         df_cleaned['feature'] = 'pressure_hpa'
-    elif filename == 'wind.csv':
-
+        
+    elif 'wind.csv' in filename:
         # 1. Wind Speed
         df_speed = df_cleaned[df_cleaned['Parameter Name'].str.contains('Wind Speed')].copy()
         df_speed['feature'] = 'wind_speed_ms'
@@ -67,12 +89,15 @@ def process_and_convert(df, filename):
         
         return pd.concat([df_speed, df_direction], ignore_index=True)
         
-    else: return pd.DataFrame() 
+    else: 
+        print(f"Warning: File {filename} could not be mapped to a feature.")
+        return pd.DataFrame() 
 
+    # Return the standardized DataFrame for non-wind data
     return df_cleaned[['date', 'latitude', 'longitude', 'feature', 'value']]
 
 def load_and_merge_data(folder, input_files):
-    """Reads, standardizes, and merges 10 CSV files (pollution + weather)."""
+    """Reads, standardizes, and merges all CSV files."""
     all_data = []
     
     for file in input_files:
@@ -83,13 +108,11 @@ def load_and_merge_data(folder, input_files):
                  continue
                  
             df = pd.read_csv(file_path)
-            
             df_processed = process_and_convert(df, file)
             
             if not df_processed.empty:
                 all_data.append(df_processed)
                 print(f"Processed {file} - {len(df_processed)} rows.")
-
 
         except Exception as e:
             print(f"Error reading or processing file {file}: {e}")
@@ -101,6 +124,7 @@ def load_and_merge_data(folder, input_files):
 
     df_combined = pd.concat(all_data, ignore_index=True)
     
+    # Pivot the data to have one row per date/location with columns for each feature
     df_pivot = df_combined.pivot_table(
         index=['date', 'latitude', 'longitude'], 
         columns='feature', 
@@ -112,26 +136,41 @@ def load_and_merge_data(folder, input_files):
     
     df_pivot['date'] = pd.to_datetime(df_pivot['date'])
 
-    print(f"\nMerged and Pivoted into {len(df_pivot)} rows of data.")
+    print(f"\nMerged and Pivoted into {len(df_pivot)} unique date/location rows of data.")
     return df_pivot
 
 def feature_engineering(df):
-    """Creates Lagged Features and time-based features."""
+    """Creates Multi-Targets (target variables for all pollutants) and Lagged Features."""
     if df.empty:
         return df
 
+    # Sort data for correct time-series operations (lagging)
     df = df.sort_values(by=['latitude', 'longitude', 'date'])
     
-    df['target_pm25'] = df['pm25'] 
-    df['pm25_lag_1d'] = df.groupby(['latitude', 'longitude'])['target_pm25'].shift(1)
+    # --- TẠO MULTI-TARGET VÀ LAG FEATURES CHO TẤT CẢ CÁC CHẤT Ô NHIỄM ---
+    lag_cols = []
+    for feature in POLLUTION_FEATURES:
+        # 1. Target variable (Current day's value)
+        target_col = f'target_{feature}'
+        # Đảm bảo cột tồn tại trước khi tạo target
+        if feature in df.columns:
+            df[target_col] = df[feature] 
+            
+            # 2. Lagged feature (Previous day's value)
+            lag_col = f'{feature}'
+            df[lag_col] = df.groupby(['latitude', 'longitude'])[feature].shift(1)
+            lag_cols.append(lag_col)
+        else:
+            print(f"Warning: Feature '{feature}' not found in merged data. Skipping target/lag creation for it.")
 
-    df['pm10_lag_1d'] = df.groupby(['latitude', 'longitude'])['pm10'].shift(1)
-    df['no2_lag_1d'] = df.groupby(['latitude', 'longitude'])['no2'].shift(1)
-    
+
+    # --- TẠO TIME-BASED FEATURES ---
     df['day_of_year'] = df['date'].dt.dayofyear
-    df['day_of_week'] = df['date'].dt.dayofweek
+    df['day_of_week'] = df['date'].dt.dayofweek # Monday=0, Sunday=6
     
-    df = df.dropna(subset=['pm25_lag_1d'])
+    # Remove rows where lag features are missing (first day of each site)
+    # Chúng ta chỉ cần loại bỏ những hàng có bất kỳ cột lag nào bị thiếu
+    df = df.dropna(subset=lag_cols)
     
     return df
 
@@ -144,7 +183,7 @@ def integrate_external_data(df):
 
     tempo_data = []
     
-    for index, row in df.iterrows():
+    for _, row in df.iterrows():
         date_str = row['date'].strftime('%Y-%m-%d')
         lat = row['latitude']
         lon = row['longitude']
@@ -163,6 +202,11 @@ def integrate_external_data(df):
 
 if __name__ == "__main__":
     
+    # Ensure the output directory exists
+    output_dir = os.path.dirname(OUTPUT_CSV)
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
+        
     print(f"--- STARTING DATA AGGREGATION FROM FOLDER: {DATA_FOLDER} ---")
     
     df_training = load_and_merge_data(DATA_FOLDER, ALL_INPUT_FILES)
@@ -173,11 +217,17 @@ if __name__ == "__main__":
         df_training = feature_engineering(df_training)
         df_training = integrate_external_data(df_training)
 
+        # CẬP NHẬT FINAL_COLUMNS để bao gồm tất cả các cột mục tiêu và lag mới
+        TARGET_LAG_COLUMNS = []
+        for feature in POLLUTION_FEATURES:
+            TARGET_LAG_COLUMNS.append(f'target_{feature}')
+            TARGET_LAG_COLUMNS.append(f'{feature}')
+            
         FINAL_COLUMNS = [
             'date', 'latitude', 'longitude', 
-            'target_pm25', 
-            'pm25_lag_1d', 'pm10_lag_1d', 'no2_lag_1d',
-            'co', 'so2', 'o3', 
+            *TARGET_LAG_COLUMNS,
+            # Các features hiện tại (không phải target/lag)
+            # 'co', 'so2', 'o3', 'pm25', 'pm10', 'no2', 
             'temperature_c', 'wind_speed_ms', 'wind_direction_deg', 'humidity_perc', 'pressure_hpa', 
             'tempo_no2_col', 'tempo_hcho_col',
             'day_of_year', 'day_of_week'
