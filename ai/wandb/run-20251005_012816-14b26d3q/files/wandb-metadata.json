@@ -1,0 +1,28 @@
+{
+  "os":  "Linux-6.14.0-32-generic-x86_64-with-glibc2.39",
+  "python":  "CPython 3.12.3",
+  "startedAt":  "2025-10-04T18:28:16.999026Z",
+  "program":  "/home/nguyen-quang-huy/GITHUB/My_Repo/AirForce/ai/lstm_v1.ipynb",
+  "codePath":  "ai/lstm_v1.ipynb",
+  "codePathLocal":  "lstm_v1.ipynb",
+  "git":  {
+    "remote":  "git@github.com:DanielNguyen-05/AirForce.git",
+    "commit":  "b927c6c822da31c208a3b5ec0155efd0dbc4294a"
+  },
+  "email":  "quanghuy71847@gmail.com",
+  "root":  "/home/nguyen-quang-huy/GITHUB/My_Repo/AirForce/ai",
+  "host":  "x1-c-g10",
+  "executable":  "/home/nguyen-quang-huy/GITHUB/My_Repo/AirForce/.venv/bin/python",
+  "cpu_count":  14,
+  "cpu_count_logical":  20,
+  "disk":  {
+    "/":  {
+      "total":  "501809635328",
+      "used":  "100992348160"
+    }
+  },
+  "memory":  {
+    "total":  "33235963904"
+  },
+  "writerId":  "3xkgxfbmbphg4wa56rw608igunlmkv9d"
+}
