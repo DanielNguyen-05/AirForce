@@ -24,8 +24,9 @@ ChartJS.register(
 export const SevenDayChart = ({ historyData = [], data = [] }) => {
   console.log(historyData);
   const labels = [
-    ...historyData.map((d) => {
-      const date = new Date(d.date);
+    ...Array.from({ length: historyData.length }).map((_, i) => {
+      const date = new Date();
+      date.setDate(date.getDate() - (historyData.length - i - 1));
       return date.toLocaleDateString("vi-VN", {
         weekday: "short",
         day: "numeric",
