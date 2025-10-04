@@ -7,9 +7,7 @@ import mongoose from "mongoose";
 const app = express();
 const port = 3000;
 
-mongoose.connect(process.env.DATABASE)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+mongoose.connect(process.env.DATABASE);
 
 app.use(express.json());
 app.use(cors({

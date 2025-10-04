@@ -1,0 +1,12 @@
+pandas
+numpy
+tensorflow
+scikit-learn
+joblib
+xgboost
+openpyxl
+requests
+xarray
+netCDF4
+h5netcdf
+dotenv

@@ -1,7 +1,10 @@
 .venv/
 
 .env
+data
+training
 node_modules
+multi_training
 
 # Logs
 logs
