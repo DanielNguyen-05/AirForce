@@ -1,4 +1,4 @@
-pandas
+mpandas
 numpy
 scikit-learn
 xgboost
