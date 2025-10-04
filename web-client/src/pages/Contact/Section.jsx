@@ -126,7 +126,7 @@ export const Section = () => {
           {/* Contact Form Section */}
           <div>
             <h2 className="text-white text-4xl font-bold mb-8">
-              Leave <span className="text-yellow-300">Your contact</span>
+              Leave <span className="text-[#F4FF4B]">Your contact</span>
             </h2>
 
             <form className="space-y-6" data-aos="fade-left">
@@ -138,7 +138,7 @@ export const Section = () => {
                   </label>
                   <input
                     type="text"
-                    className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+                    className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#F4FF4B]"
                     required
                   />
                 </div>
@@ -148,7 +148,7 @@ export const Section = () => {
                   </label>
                   <input
                     type="tel"
-                    className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+                    className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#F4FF4B]"
                     required
                   />
                 </div>
@@ -161,7 +161,7 @@ export const Section = () => {
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-300"
+                  className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#F4FF4B]"
                   required
                 />
               </div>
@@ -173,7 +173,7 @@ export const Section = () => {
                 </label>
                 <textarea
                   rows="5"
-                  className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-300 resize-none"
+                  className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#F4FF4B] resize-none"
                   required
                 ></textarea>
               </div>
@@ -182,7 +182,7 @@ export const Section = () => {
               <div className="flex justify-center">
                 <button
                   type="submit"
-                  className="px-12 py-3 bg-yellow-300 text-black font-bold text-xl rounded-full hover:bg-yellow-400 transition shadow-lg"
+                  className="px-12 py-3 bg-[#F4FF4B] text-black font-bold text-xl rounded-full hover:bg-yellow-400 transition shadow-lg"
                 >
                   Send
                 </button>
