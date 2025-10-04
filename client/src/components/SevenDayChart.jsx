@@ -22,18 +22,21 @@ ChartJS.register(
 );
 
 export const SevenDayChart = ({ historyData = [], data = [] }) => {
-  console.log(historyData);
+  // historyData[7] = data[0];
+  // console.log(historyData);
   const labels = [
-    ...Array.from({ length: historyData.length }).map((_, i) => {
-      const date = new Date();
-      date.setDate(date.getDate() - (historyData.length - i - 1));
-      return date.toLocaleDateString("vi-VN", {
-        weekday: "short",
-        day: "numeric",
-        month: "numeric",
-      });
-    }),
-    ...Array.from({ length: data.length }).map((_, i) => {
+    // lịch sử (7 ngày)
+    // ...historyData.map((_, i) => {
+    //   const date = new Date();
+    //   date.setDate(date.getDate() - (historyData.length - i - 1));
+    //   return date.toLocaleDateString("vi-VN", {
+    //     weekday: "short",
+    //     day: "numeric",
+    //     month: "numeric",
+    //   });
+    // }),
+
+    ...data.slice(1).map((_, i) => {
       const date = new Date();
       date.setDate(date.getDate() + i + 1);
       return date.toLocaleDateString("vi-VN", {
