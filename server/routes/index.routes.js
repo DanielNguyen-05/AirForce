@@ -1,11 +1,7 @@
-import express from "express";
+import { Router } from "express";
+import waqiRoute from "./waqi.routes.js";
 
-const router = express.Router();
+const router = Router();
+router.use("/waqi", waqiRoute);
 
-// Index router
-router.get("/", (req, res) => {
-  res.send("Chào mừng đến với server API của AirForce!")
-})
-// Tách controller xử lý vào folder controller
-
-export default router
+export default router;
