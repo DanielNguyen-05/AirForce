@@ -3,11 +3,11 @@ import numpy as np
 from datetime import datetime, timedelta
 import os
 
-DATA_FOLDER = 'data/2025' 
+DATA_FOLDER = 'data/1999' 
+OUTPUT_CSV = "training/1999_data.csv" 
 POLLUTION_FILES = ["co.csv", "no2.csv", "ozone.csv", "pm10.csv", "pm25.csv", "so2.csv"]
 WEATHER_FILES = ["press.csv", "rh.csv", "temp.csv", "wind.csv"]
 ALL_INPUT_FILES = POLLUTION_FILES + WEATHER_FILES
-OUTPUT_CSV = "training/2025_data.csv" 
 
 # --- MÔ PHỎNG DỮ LIỆU VỆ TINH TEMPO ---
 def mock_fetch_tempo_data(date, latitude, longitude):
