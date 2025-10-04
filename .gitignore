@@ -2,6 +2,7 @@
 
 .env
 data
+training
 node_modules
 
 # Logs
