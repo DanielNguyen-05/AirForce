@@ -452,7 +452,7 @@ export const Section = () => {
               style={{ height: "100%", width: "80%" }}
             >
               <MapUpdater selected={selected} zoomLevel={selected ? 15 : 13} />
-              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              <TileLayer url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}" />
               {selected && (
                 <Marker position={[selected.lat, selected.lon]}>
                   <Popup>{selected.name}</Popup>
