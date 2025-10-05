@@ -130,7 +130,7 @@ app = Flask(__name__)
 # Cho phép CORS cho frontend React (localhost:5173)
 CORS(app, resources={
     r"/*": {
-        "origins": "http://localhost:5173",
+        "origins": "https://airforceclient.vercel.app",
         "methods": ["GET", "POST", "PATCH", "DELETE"],
         "allow_headers": ["Content-Type", "Authorization"],
         "supports_credentials": True
