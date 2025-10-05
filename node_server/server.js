@@ -11,7 +11,7 @@ mongoose.connect(process.env.DATABASE);
 
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: 'https://airforceclient.vercel.app',
   methods: ["GET", "POST", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
