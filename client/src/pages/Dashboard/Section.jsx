@@ -121,6 +121,7 @@ export const Section = () => {
   const sectionRef = useRef(null);
 
   const fetchData = (latitude, longitude) => {
+    setAdvice("Wait seconds! AirForce is thinking...");
     fetch(`${import.meta.env.VITE_BASE_URL}/waqi/geo`, {
       method: "POST",
       headers: {
