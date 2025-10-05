@@ -22,7 +22,6 @@ ChartJS.register(
 );
 
 export const SevenDayChart = ({ historyData = [], data = [] }) => {
-  console.log(historyData);
   const labels = [
     ...historyData.map((d) => {
       const date = new Date(d.date);

@@ -222,6 +222,7 @@ export const Section = () => {
             })
               .then((res) => res.json())
               .then((pred) => {
+                console.log("Prediction result:", pred);
                 setPred(pred.prediction);
               })
               .catch((err) => console.error("Prediction error:", err));
@@ -462,10 +463,7 @@ export const Section = () => {
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight drop-shadow text-center mb-[10px]">
             Air Quality Index (AQI) Prediction for next 7 days
           </h1>
-          <SevenDayChart
-            data={pred.length > 0 && pred}
-            // historyData={aqiHistorical}
-          />
+          {pred.length > 0 && <SevenDayChart data={pred} />}
         </div>
       </div>
     </>
