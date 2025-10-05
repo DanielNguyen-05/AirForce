@@ -46,7 +46,6 @@ export const Section1 = () => {
             src="/cloud.png"
             alt=""
             className="absolute bottom-[-50px] left-0 w-full opacity-90"
-            data-aos="fade-up"
           />
         </div>
       </div>
