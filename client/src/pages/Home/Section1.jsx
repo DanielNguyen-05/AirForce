@@ -17,7 +17,7 @@ export const Section1 = () => {
           </p>
         </div>
 
-        <div className="flex mt-20 z-10">
+        <div className="flex mt-10 z-10">
           <div className="bg-white/20 backdrop-blur-lg rounded-xl w-[300px] h-[250px] flex flex-col justify-center items-center rotate-[-15deg] shadow-lg" data-aos="fade-left" data-aos-delay="350">
             <div className="text-4xl bg-[#F4FF4B47] px-[20px] py-[15px] rounded-full border-[#FFFFFFC1] border-[1.2px]">✔</div>
             <p className="mt-2 text-[#0159EF] text-[24px] font-bold text-center">
@@ -41,7 +41,7 @@ export const Section1 = () => {
             About us
           </Link>
         </div>
-        <div className="w-[1500px]">
+        <div className="w-full py-0">
           <img
             src="/cloud.png"
             alt=""
