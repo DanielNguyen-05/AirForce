@@ -46,30 +46,7 @@ def generate_prompt(df: pd.DataFrame, latitude: float, longitude: float, current
     """
     forecast_data = df.to_string(index=False)
     
-    prompt = (
-        f"NOTE: Answer in one paragraph, do not use * or markdown format, do not write the prompt format in answer again, no longer than 10 sentences. Use friendly, easy-to-understand language with clear structure, bullet points, and appropriate emojis.\n"
-        f"You are AirForce - an intelligent air quality advisory assistant for the AirForce application.\n\n"
-        f"FORECAST INFORMATION:\n"
-        f"- Location: ({latitude}, {longitude})\n"
-        f"- Current Date: {current_date}\n"
-        f"- 7-Day AQI Forecast:\n{forecast_data}\n\n"
-        f"ADVISORY REQUIREMENTS:\n"
-        f"1. Overall Assessment: Analyze the air quality trend over the next 7 days\n\n"
-        f"2. Outdoor Activity Recommendations:\n"
-        f"   - Days RECOMMENDED for outdoor activities (good AQI)\n"
-        f"   - Days NOT RECOMMENDED for outdoor activities (poor AQI)\n"
-        f"   - Best time windows during the day (early morning, late evening usually better)\n\n"
-        f"3. At-Risk Groups Advisory:\n"
-        f"   - Children and elderly: specific warnings and recommendations\n"
-        f"   - People with respiratory/cardiovascular conditions: special advice\n"
-        f"   - Pregnant women: days to limit outdoor exposure\n"
-        f"   - Healthy adults: outdoor activities that can be performed safely\n\n"
-        f"4. Protective Measures:\n"
-        f"   - When to wear masks (specify mask types if AQI is very poor)\n"
-        f"   - Suitable indoor/outdoor activities\n"
-        f"   - Precautions for outdoor exercise\n\n"
-        f"5. Confidence Level: Assess the accuracy of the forecast (based on AQI volatility)\n\n"
-    )
+    prompt = f"You are AirForce, an intelligent air quality advisory assistant for the AirForce app. Using the following data: Location=({latitude}, {longitude}), Date={current_date}, and 7-Day AQI Forecast={forecast_data}, provide a clear and friendly single-paragraph advisory (no markdown, no emojis, no line breaks, no special symbols). Include: 1) overall trend of air quality over the next 7 days, 2) which days are good or bad for outdoor activities, 3) health advice for sensitive groups (children, elderly, pregnant women, people with respiratory or heart issues), 4) protective measures like when to wear masks and suggested indoor or outdoor activities, 5) forecast confidence level. Format each advice as 'Date: Advice'. Keep it concise, human-like, and easy to display in a mobile app UI."
     return prompt
 
 def get_air_quality_advice(df: pd.DataFrame, latitude: float, longitude: float, current_date: str) -> str:

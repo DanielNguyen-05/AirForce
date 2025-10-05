@@ -395,9 +395,9 @@ export const Section = () => {
           <div className="mt-6 rounded-3xl bg-white/3 backdrop-blur-xl border border-white/40 p-6 md:p-8 shadow-xl text-[#295376]">
             <div className="flex flex-row items-center justify-between w-full">
               <div className="flex items-center">
-                <div className="text-5xl leading-none">{outdoor.icon}</div>
+                {/* <div className="text-5xl leading-none">{outdoor.icon}</div> */}
                 <div>
-                  <div className="text-3xl md:text-4xl font-extrabold tracking-tight">
+                  <div className="text-3xl md:text-4xl font-black tracking-tight">
                     {outdoor.tempC}°C
                   </div>
                   <div className="">Outdoor Condition</div>
@@ -412,7 +412,7 @@ export const Section = () => {
               </div>
             </div>
             <div>
-              <h1 className="text-3xl font-bold tracking-tight drop-shadow my-[20px]">
+              <h1 className="text-2xl font-bold tracking-tight drop-shadow my-[20px]">
                 Advice
               </h1>
               <div>{advice || "Wait seconds! AirForce is thinking..."}</div>

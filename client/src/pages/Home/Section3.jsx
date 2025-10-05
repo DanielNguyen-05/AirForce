@@ -16,25 +16,25 @@ export const Section3 = () => {
 
             <div className="absolute top-[0px] left-[10px]">
               <div className="px-5 py-2 whitespace-nowrap">
-                <p className="text-[#F4FF4B] font-semibold text-2xl">Placeholder 1</p>
+                <p className="text-[#F4FF4B] font-semibold text-lg">Real-Time Air Quality Updates</p>
               </div>
             </div>
 
             <div className="absolute top-[-40px] right-[10px]">
               <div className="px-5 py-2 whitespace-nowrap">
-                <p className="text-[#F4FF4B] font-semibold text-2xl">Placeholder 1</p>
+                <p className="text-[#F4FF4B] font-semibold text-lg">Air Quality Forecasting</p>
               </div>
             </div>
 
             <div className="absolute bottom-[10px] left-[30px]" >
               <div className="px-5 py-2 whitespace-nowrap">
-                <p className="text-[#F4FF4B] font-semibold text-2xl">Placeholder 1</p>
+                <p className="text-[#F4FF4B] font-semibold text-lg">Visualization and Alerts</p>
               </div>
             </div>
 
-            <div className="absolute bottom-[50px] right-[0px]">
+            <div className="absolute bottom-[50px] right-[-30px]">
               <div className="px-5 py-2 whitespace-nowrap">
-                <p className="text-[#F4FF4B] font-semibold text-2xl">Placeholder 1</p>
+                <p className="text-[#F4FF4B] font-semibold text-lg">Helpful advice for next 7-day</p>
               </div>
             </div>
           </div>
