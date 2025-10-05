@@ -463,7 +463,7 @@ export const Section = () => {
             Air Quality Index (AQI) Prediction for next 7 days
           </h1>
           <SevenDayChart
-            data={pred.length > 0 ? pred : Array(7).fill(0)}
+            data={pred.length > 0 && pred}
             // historyData={aqiHistorical}
           />
         </div>
