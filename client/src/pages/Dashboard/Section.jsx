@@ -201,7 +201,6 @@ export const Section = () => {
         })
           .then((res) => res.json())
           .then((result2) => {
-            console.log(result2.data);
             const temp = [];
             result2.data.forEach((item) => {
               temp.push(item.aqi);
@@ -223,12 +222,7 @@ export const Section = () => {
             })
               .then((res) => res.json())
               .then((pred) => {
-                setPred(
-                  Array.isArray(pred.prediction)
-                    ? pred.prediction
-                    : Array(7).fill(0)
-                );
-                console.log("Prediction data:", pred);
+                setPred(pred.prediction);
               })
               .catch((err) => console.error("Prediction error:", err));
           });
