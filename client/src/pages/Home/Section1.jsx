@@ -17,14 +17,14 @@ export const Section1 = () => {
           </p>
         </div>
 
-        <div className="flex mt-10 z-10">
-          <div className="bg-white/20 backdrop-blur-lg rounded-xl w-[300px] h-[150px] flex flex-col justify-center items-center rotate-[-15deg] shadow-lg" data-aos="fade-left" data-aos-delay="350">
+        <div className="flex mt-20 z-10">
+          <div className="bg-white/20 backdrop-blur-lg rounded-xl w-[300px] h-[250px] flex flex-col justify-center items-center rotate-[-15deg] shadow-lg" data-aos="fade-left" data-aos-delay="350">
             <div className="text-4xl bg-[#F4FF4B47] px-[20px] py-[15px] rounded-full border-[#FFFFFFC1] border-[1.2px]">✔</div>
             <p className="mt-2 text-[#0159EF] text-[24px] font-bold text-center">
               Predicting Cleaner
             </p>
           </div>
-          <div className="bg-white/20 backdrop-blur-lg rounded-xl w-[300px] h-[150px] flex flex-col justify-center items-center rotate-[10deg] shadow-lg" data-aos="fade-right" data-aos-delay="350">
+          <div className="bg-white/20 backdrop-blur-lg rounded-xl w-[300px] h-[250px] flex flex-col justify-center items-center rotate-[10deg] shadow-lg" data-aos="fade-right" data-aos-delay="350">
             <div className="text-4xl bg-[#F4FF4B47] px-[20px] py-[15px] rounded-full border-[#FFFFFFC1] border-[1.2px]">✔</div>
             <p className="mt-2 text-[#0159EF] text-[24px] font-bold text-center">
               Safer Skies
@@ -33,11 +33,11 @@ export const Section1 = () => {
         </div>
 
         <div className="flex gap-4 justify-center items-center py-6 mt-[10px] z-10" data-aos="fade-up" data-aos-delay="300">
-          <Link to="/dashboard" className="px-6 py-2 rounded-full bg-blue-600 text-white font-semibold shadow-md hover:bg-blue-700 transition">
+          <Link to="/dashboard" className="px-10 py-4 rounded-full bg-blue-600 text-white font-semibold shadow-md hover:bg-blue-700 transition">
             Get Started
           </Link>
 
-          <Link to="/contact" className="px-6 py-2 rounded-full bg-white text-black font-semibold shadow-md hover:bg-gray-100 transition">
+          <Link to="/contact" className="px-10 py-4 rounded-full bg-white text-black font-semibold shadow-md hover:bg-gray-100 transition">
             About us
           </Link>
         </div>
@@ -45,7 +45,7 @@ export const Section1 = () => {
           <img
             src="/cloud.png"
             alt=""
-            className="absolute bottom-[-50px] left-0 w-full opacity-90"
+            className="absolute bottom-[-100px] left-0 w-full opacity-90"
             data-aos="fade-up"
           />
         </div>

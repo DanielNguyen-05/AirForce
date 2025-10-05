@@ -1,8 +1,8 @@
 export const Section3 = () => {
   return (
     <>
-      <div className="bg-[#1F67F1] rounded-t-[60px] h-[700px] relative overflow-hidden">
-        <div className="flex flex-col items-center justify-center py-12" data-aos="fade-up">
+      <div className="bg-[#1F67F1] rounded-t-[60px] h-[700px] relative overflow-hidden" data-aos="fade-up">
+        <div className="flex flex-col items-center justify-center py-12" data-aos="fade-up" data-aos-delay="200">
           <h2 className="text-[64px] font-bold text-white mb-8" data-aos="fade-up" data-aos-delay="300">
             Features of <span className="text-yellow-300">AirForce</span>
           </h2>
