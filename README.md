@@ -24,7 +24,8 @@
 </div>
 
 ## Overview
-This web application was developed as part of the **NASA Space Apps Challenge 2025** with the topic **From EarthData to Action: Cloud Computing with Earth Observation Data for Predicting Cleaner, Safer Skies**.
+A web platform from the **NASA International Space Apps Challenge 2025** for monitoring and forecasting air quality using real-time environmental data and predictive models.
+
 
 ## Objective
 * Use **TEMPO** *(Tropospheric Emissions: Monitoring of Pollution)* satellite data combined with ground-based air quality measurements and weather data to forecast air quality.
